@@ -22,7 +22,7 @@ namespace Simulator1
     {
         private Memory RAM;
         private Register[] reg;
-
+        //test
         //variables that hold references to the regs and RAM
 
         //CPU instantiation
