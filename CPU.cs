@@ -24,7 +24,7 @@ namespace Simulator1
         private Register[] reg;
         //test
         //variables that hold references to the regs and RAM
-
+        //dddddd
         //CPU instantiation
 
         public CPU(ref Memory RAM, ref Register[] reg)
