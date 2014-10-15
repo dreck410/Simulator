@@ -1,0 +1,15 @@
+C:\Users\Daniel\Source\Repos\GDBStub\bin\Debug\ConsoleApplication.exe.config
+C:\Users\Daniel\Source\Repos\GDBStub\bin\Debug\ConsoleApplication.exe
+C:\Users\Daniel\Source\Repos\GDBStub\bin\Debug\ConsoleApplication.pdb
+C:\Users\Daniel\Source\Repos\GDBStub\obj\x86\Debug\GDBStub.csprojResolveAssemblyReference.cache
+C:\Users\Daniel\Source\Repos\GDBStub\obj\x86\Debug\ConsoleApplication.exe
+C:\Users\Daniel\Source\Repos\GDBStub\obj\x86\Debug\ConsoleApplication.pdb
+C:\Users\Daniel\Sources\Repos\GDBStub\obj\x86\Debug\GDBStub.csprojResolveAssemblyReference.cache
+C:\Users\Daniel\Sources\Repos\GDBStub\bin\Debug\GDBStub.exe.config
+C:\Users\Daniel\Sources\Repos\GDBStub\bin\Debug\GDBStub.exe
+C:\Users\Daniel\Sources\Repos\GDBStub\bin\Debug\GDBStub.pdb
+C:\Users\Daniel\Sources\Repos\GDBStub\obj\x86\Debug\GDBStub.exe
+C:\Users\Daniel\Sources\Repos\GDBStub\obj\x86\Debug\GDBStub.pdb
+C:\Users\Daniel\Sources\Simulator1\bin\Debug\GDBStub.exe.config
+C:\Users\Daniel\Sources\Simulator1\obj\x86\Debug\GDBStub.exe
+C:\Users\Daniel\Sources\Simulator1\obj\x86\Debug\GDBStub.pdb
