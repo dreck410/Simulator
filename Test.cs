@@ -164,20 +164,20 @@ namespace Simulator1
             Logger.Instance.writeLog("TEST: mov r2, #48 : 0xe3a02030");
             this.runCommand(0xe3a02030);
             Debug.Assert(reg[2].ReadWord(0) == 48);
-            Logger.Instance.writeLog("TEST: Executed");
+            Logger.Instance.writeLog("TEST: Executed\n");
 
 
             Logger.Instance.writeLog("TEST: mov r0, r3 : 0xe1a00003");
             reg[3].WriteWord(0, 3);
             this.runCommand(0xe1a00003);
             Debug.Assert(reg[0].ReadWord(0) == 3);
-            Logger.Instance.writeLog("TEST: Executed");
+            Logger.Instance.writeLog("TEST: Executed\n");
 
             Logger.Instance.writeLog("TEST: mov r0, r3 lsl #4 : 0xe1a00403");
             reg[3].WriteWord(0, 3);
             this.runCommand(0xe1a00403);
             Debug.Assert(reg[0].ReadWord(0) == 0x300);
-            Logger.Instance.writeLog("TEST: Executed");
+            Logger.Instance.writeLog("TEST: Executed\n");
 
 
             Logger.Instance.writeLog("TEST: mov r0, r1 lsl r2 : 0xe1a00211");
@@ -186,7 +186,7 @@ namespace Simulator1
             reg[2].WriteWord(0, 1);
             this.runCommand(0xe1a00211);
             Debug.Assert(reg[0].ReadWord(0) == 0x2);
-            Logger.Instance.writeLog("TEST: Executed");
+            Logger.Instance.writeLog("TEST: Executed\n");
 
             Logger.Instance.writeLog("TEST: mov r0, r1 lsr r2 : 0xe1a00231");
             reg[0].WriteWord(0, 0);
@@ -194,7 +194,7 @@ namespace Simulator1
             reg[2].WriteWord(0, 1);
             this.runCommand(0xe1a00231);
             Debug.Assert(reg[0].ReadWord(0) == 0x7);
-            Logger.Instance.writeLog("TEST: Executed");
+            Logger.Instance.writeLog("TEST: Executed\n");
 
             //dd
             Logger.Instance.writeLog("TEST: mov r0, r1 asr r2 : 0xe1a00251");
@@ -203,7 +203,7 @@ namespace Simulator1
             reg[2].WriteWord(0, 1);
             this.runCommand(0xe1a00251);
             Debug.Assert(reg[0].ReadWord(0) == 0xC0000007);
-            Logger.Instance.writeLog("TEST: Executed");
+            Logger.Instance.writeLog("TEST: Executed\n");
 
             Logger.Instance.writeLog("TEST: mov r0, r1 ror r2 : 0xe1a00271");
             reg[0].WriteWord(0, 0);
@@ -211,43 +211,61 @@ namespace Simulator1
             reg[2].WriteWord(0, 2);
             this.runCommand(0xe1a00271);
             Debug.Assert(reg[0].ReadWord(0) == 0xC0000003);
-            Logger.Instance.writeLog("TEST: Executed");
+            Logger.Instance.writeLog("TEST: Executed\n");
 
             Logger.Instance.writeLog("TEST: mvn R3, 1 : 0xe1e03001");
             reg[3].WriteWord(0, 0);
             reg[1].WriteWord(0, 0x6);
             this.runCommand(0xe1e03001);
             Debug.Assert(reg[3].ReadWord(0) == 0xFFFFFFF9);
-            Logger.Instance.writeLog("TEST: Executed");
+            Logger.Instance.writeLog("TEST: Executed\n");
 
-            Logger.Instance.writeLog("TEST: rsb r0, r1, r2 : 0xe1610002");
+            Logger.Instance.writeLog("TEST: rsb r0, r1, r2 : 0xe0610002");
             reg[0].WriteWord(0, 0);
-            reg[1].WriteWord(0, 8);
+            reg[1].WriteWord(0, 5);
             reg[2].WriteWord(0, 10);
-            this.runCommand(0xe1610002);
+            this.runCommand(0xe0610002);
             Debug.Assert(reg[0].ReadWord(0) == 5);
-            Logger.Instance.writeLog("TEST: Executed");
-                    
+            Logger.Instance.writeLog("TEST: Executed\n");
+
+            //0xe0050291
+            Logger.Instance.writeLog("TEST: mul r0, r1, r2 : 0xe0000291");
+            reg[0].WriteWord(0, 0);
+            reg[1].WriteWord(0, 5);
+            reg[2].WriteWord(0, 10);
+            this.runCommand(0xe0000291);
+            Debug.Assert(reg[0].ReadWord(0) == 50);
+            Logger.Instance.writeLog("TEST: Executed\n");
+            /*
+            Logger.Instance.writeLog("TEST: mul r0, r1, r2 : 0xe0000291");
+            reg[0].WriteWord(0, 0);
+            reg[1].WriteWord(0, 0xFFFFFFFF);
+            reg[2].WriteWord(0, 0xFFFFFFFF);
+            this.runCommand(0xe0000291);
+            Debug.Assert(reg[0].ReadWord(0) == 50);
+            Logger.Instance.writeLog("TEST: Executed\n");
+            */
+
             Logger.Instance.writeLog("TEST: str r2, [r1] : 0xe5812000");
             reg[1].WriteWord(0, 0x40);
             reg[2].WriteWord(0, 0x1234);
             this.runCommand(0xe5812000);
             Debug.Assert(RAM.ReadWord(0x40) == 0x1234);
-            Logger.Instance.writeLog("TEST: Executed");
+            Logger.Instance.writeLog("TEST: Executed\n");
 
             Logger.Instance.writeLog("TEST: ldr r2, [r1] : 0xe5912000");
             reg[1].WriteWord(0, 0x40);
             RAM.WriteWord(0x40, 0x1234);
             this.runCommand(0xe5912000);
             Debug.Assert(reg[2].ReadWord(0) == 0x1234);
-            Logger.Instance.writeLog("TEST: Executed");
+            Logger.Instance.writeLog("TEST: Executed\n");
 
 
             Logger.Instance.writeLog("TEST: Add R9, R8, #2147483648 : 0xe2889102");
             reg[8].WriteWord(0, 10);
             this.runCommand(0xe2889102);
             Debug.Assert(reg[9].ReadWord(0) == 2147483648 + 10);
-            Logger.Instance.writeLog("TEST: Executed");
+            Logger.Instance.writeLog("TEST: Executed\n");
 
 
             //test 0xe24dd008 sub r13, r13, #8
@@ -256,7 +274,7 @@ namespace Simulator1
             reg[12].WriteWord(0, 0);
             this.runCommand(0xe24dc008);
             Debug.Assert(reg[12].ReadWord(0) == 2);
-            Logger.Instance.writeLog("TEST: Executed");
+            Logger.Instance.writeLog("TEST: Executed\n");
 
             //test 0xeb000006 bxl 6;
             Logger.Instance.writeLog("TEST: BX #6 : 0xeb000006");
@@ -265,7 +283,7 @@ namespace Simulator1
             this.runCommand(0xeb000006);
             Debug.Assert(reg[15].ReadWord(0) == 24);
             Debug.Assert(reg[14].ReadWord(0) == 0);
-            Logger.Instance.writeLog("TEST: Executed");
+            Logger.Instance.writeLog("TEST: Executed\n");
 
 
 
@@ -280,7 +298,7 @@ namespace Simulator1
             Debug.Assert(RAM.ReadWord(0x18) == 0x4F3);
             Debug.Assert(RAM.ReadWord(0x1c) == 0x48);
             Debug.Assert(reg[1].ReadWord(0) == 24);
-            Logger.Instance.writeLog("TEST: Executed");
+            Logger.Instance.writeLog("TEST: Executed\n");
 
             //test 0xe88d4800 strm r13, r14, r11 U = 1 P = 0 W = 0
             Logger.Instance.writeLog("TEST: strm r1, r14, r11 : 0xe8214800");
@@ -291,7 +309,7 @@ namespace Simulator1
             Debug.Assert(RAM.ReadWord(0x20) == 0x4f3);
             Debug.Assert(RAM.ReadWord(0x24) == 0x48);
             Debug.Assert(reg[1].ReadWord(0) == 0x20);
-            Logger.Instance.writeLog("TEST: Executed");
+            Logger.Instance.writeLog("TEST: Executed\n");
 
             Logger.Instance.writeLog("TEST: ldrm r0, r13, r1 : 0xe9904002");
             reg[0].WriteWord(0, 0x20);
@@ -300,7 +318,7 @@ namespace Simulator1
             this.runCommand(0xe8902002);
             Debug.Assert(reg[1].ReadWord(0) == 0x4f3);
             Debug.Assert(reg[13].ReadWord(0) == 0x48);
-            Logger.Instance.writeLog("TEST: Executed");
+            Logger.Instance.writeLog("TEST: Executed\n");
 
 
 

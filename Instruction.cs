@@ -381,7 +381,7 @@ namespace Simulator1
                     default:
                         //something bad
                         break;
-                }//switc
+                }//switch
             
         }
 
@@ -394,8 +394,8 @@ namespace Simulator1
                 Logger.Instance.writeLog("ERR: Multiply to large");
             }
             reg[this.rn].WriteWord(0, product);
-            Logger.Instance.writeLog(String.Format("CMD: MUL R{0},R{1},R{2} : 0x{3}",
-                this.rd, this.shiftOp.Rm, this.shiftOp.Rs, Convert.ToString(this.originalBits, 16)));
+            Logger.Instance.writeLog(String.Format("CMD: MUL R{0}, {1}, {2} : 0x{3}",
+                this.rd, RmValue, RsValue, Convert.ToString(this.originalBits, 16)));
 
         }   
 
@@ -406,8 +406,8 @@ namespace Simulator1
 
             reg[this.rd].WriteWord(0, (RnValue & (~ this.shiftOp.offset)));
 
-            Logger.Instance.writeLog(String.Format("CMD: BIC R{0},R{1},{2} : 0x{3}",
-                this.rd, this.rn, this.shiftOp.offset, Convert.ToString(this.originalBits, 16)));
+            Logger.Instance.writeLog(String.Format("CMD: BIC R{0},{1}, {2} : 0x{3}",
+                this.rd, RnValue, this.shiftOp.offset, Convert.ToString(this.originalBits, 16)));
         }
 
 
@@ -418,8 +418,8 @@ namespace Simulator1
             this.shiftOp = figureOutShift(this.I, this.shiftOp, reg[this.shiftOp.Rm].ReadWord(0, true), reg);
             uint RnValue = reg[this.rn].ReadWord(0, true);
             reg[this.rd].WriteWord(0, (RnValue ^ this.shiftOp.offset));
-            Logger.Instance.writeLog(String.Format("CMD: EOR R{0},R{1},{2} : 0x{3}",
-                this.rd, this.rn, this.shiftOp.offset, Convert.ToString(this.originalBits, 16)));
+            Logger.Instance.writeLog(String.Format("CMD: EOR R{0}, {1}, {2} : 0x{3}",
+                this.rd, RnValue, this.shiftOp.offset, Convert.ToString(this.originalBits, 16)));
         }
 
         private void oor(ref Register[] reg, ref Memory RAM)
@@ -427,8 +427,8 @@ namespace Simulator1
             this.shiftOp = figureOutShift(this.I, this.shiftOp, reg[this.shiftOp.Rm].ReadWord(0, true), reg);
             uint RnValue = reg[this.rn].ReadWord(0, true);
             reg[this.rd].WriteWord(0, (RnValue | this.shiftOp.offset));
-            Logger.Instance.writeLog(String.Format("CMD: OOR R{0},R{1},{2} : 0x{3}",
-                this.rd, this.rn, this.shiftOp.offset, Convert.ToString(this.originalBits, 16)));
+            Logger.Instance.writeLog(String.Format("CMD: OOR R{0},{1},{2} : 0x{3}",
+                this.rd, RnValue, this.shiftOp.offset, Convert.ToString(this.originalBits, 16)));
         }
 
         private void and(ref Register[] reg, ref Memory RAM)
@@ -436,8 +436,8 @@ namespace Simulator1
             this.shiftOp = figureOutShift(this.I, this.shiftOp, reg[this.shiftOp.Rm].ReadWord(0, true), reg);
             uint RnValue = reg[this.rn].ReadWord(0, true);
             reg[this.rd].WriteWord(0, (RnValue & this.shiftOp.offset));
-            Logger.Instance.writeLog(String.Format("CMD: AND R{0},R{1},{2} : 0x{3}",
-                this.rd, this.rn, this.shiftOp.offset, Convert.ToString(this.originalBits, 16)));
+            Logger.Instance.writeLog(String.Format("CMD: AND R{0}, {1}, {2} : 0x{3}",
+                this.rd, RnValue, this.shiftOp.offset, Convert.ToString(this.originalBits, 16)));
         }
 
         private void rsb(ref Register[] reg, ref Memory RAM)
@@ -445,8 +445,8 @@ namespace Simulator1
             this.shiftOp = figureOutShift(this.I, this.shiftOp, reg[this.shiftOp.Rm].ReadWord(0, true), reg);
             uint RnValue = reg[this.rn].ReadWord(0, true);
             reg[this.rd].WriteWord(0, (this.shiftOp.offset - RnValue));
-            Logger.Instance.writeLog(String.Format("CMD: rsb R{0},R{1},{2} : 0x{3}",
-                this.rd, this.rn, this.shiftOp.offset, Convert.ToString(this.originalBits, 16)));
+            Logger.Instance.writeLog(String.Format("CMD: rsb R{0}, {1}, {2} : 0x{3}",
+                this.rd, RnValue, this.shiftOp.offset, Convert.ToString(this.originalBits, 16)));
         }
 
         private void mvn(ref Register[] reg, ref Memory RAM)
@@ -454,7 +454,7 @@ namespace Simulator1
             this.shiftOp = figureOutShift(this.I, this.shiftOp, reg[this.shiftOp.Rm].ReadWord(0, true), reg);
 
             reg[this.rd].WriteWord(0, ~ this.shiftOp.offset);
-            Logger.Instance.writeLog(String.Format("CMD: mvn R{0},{1} : 0x{2}",
+            Logger.Instance.writeLog(String.Format("CMD: mvn R{0}, {1} : 0x{2}",
                 this.rd, this.shiftOp.offset, Convert.ToString(this.originalBits, 16)));
         }
 
@@ -483,8 +483,8 @@ namespace Simulator1
             this.shiftOp = figureOutShift(this.I, this.shiftOp, reg[this.shiftOp.Rm].ReadWord(0, true), reg);
             uint RnValue = reg[this.rn].ReadWord(0, true);
             reg[this.rd].WriteWord(0, (RnValue + this.shiftOp.offset));
-            Logger.Instance.writeLog(String.Format("CMD: ADD R{0},R{1},{2} : 0x{3}",
-                this.rd, this.rn, this.shiftOp.offset, Convert.ToString(this.originalBits, 16)));
+            Logger.Instance.writeLog(String.Format("CMD: ADD R{0}, {1}, {2} : 0x{3}",
+                this.rd, RnValue, this.shiftOp.offset, Convert.ToString(this.originalBits, 16)));
         }
 
 
@@ -493,14 +493,10 @@ namespace Simulator1
             this.shiftOp = figureOutShift(this.I, this.shiftOp, reg[this.shiftOp.Rm].ReadWord(0, true), reg);
             uint RnValue = reg[this.rn].ReadWord(0, true);
             reg[this.rd].WriteWord(0, (RnValue - this.shiftOp.offset));
-            Logger.Instance.writeLog(String.Format("CMD: sub R{0},R{1},{2} : 0x{3}",
-                this.rd, this.rn, this.shiftOp.offset, Convert.ToString(this.originalBits, 16)));
+            Logger.Instance.writeLog(String.Format("CMD: sub R{0}, {1}, {2} : 0x{3}",
+                this.rd, RnValue, this.shiftOp.offset, Convert.ToString(this.originalBits, 16)));
 
         }
-
-
-
-
 
         private void mov(ref Register[] reg, ref Memory RAM)
         {
@@ -508,7 +504,7 @@ namespace Simulator1
             this.shiftOp = figureOutShift(this.I, this.shiftOp, reg[this.shiftOp.Rm].ReadWord(0, true), reg);
 
             reg[this.rd].WriteWord(0, this.shiftOp.offset);
-            Logger.Instance.writeLog(String.Format("CMD: mov R{0},{1} : 0x{2}",
+            Logger.Instance.writeLog(String.Format("CMD: mov R{0}, {1} : 0x{2}",
                 this.rd, this.shiftOp.offset, Convert.ToString(this.originalBits, 16)));
         }
 
