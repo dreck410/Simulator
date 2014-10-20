@@ -196,7 +196,7 @@ namespace Simulator1
             Debug.Assert(reg[0].ReadWord(0) == 0x7);
             Logger.Instance.writeLog("TEST: Executed");
 
-
+            //dd
             Logger.Instance.writeLog("TEST: mov r0, r1 asr r2 : 0xe1a00251");
             reg[0].WriteWord(0, 0);
             reg[1].WriteWord(0, 0x8000000F);
