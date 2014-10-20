@@ -390,7 +390,9 @@ namespace Simulator1
             uint RmValue = reg[this.shiftOp.Rm].ReadWord(0, true);
             uint RsValue = reg[this.shiftOp.Rs].ReadWord(0, true);
             uint product = RmValue * RsValue;
-            if (product > 0xFFFFFFFF) { Logger.Instance.writeLog("ERR: Multiply to large"); }
+            if (product > 0xFFFFFFFF) { 
+                Logger.Instance.writeLog("ERR: Multiply to large");
+            }
             reg[this.rn].WriteWord(0, product);
             Logger.Instance.writeLog(String.Format("CMD: MUL R{0},R{1},R{2} : 0x{3}",
                 this.rd, this.shiftOp.Rm, this.shiftOp.Rs, Convert.ToString(this.originalBits, 16)));

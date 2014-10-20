@@ -32,34 +32,6 @@ namespace Simulator1
             string hash = "3500a8bef72dfed358b25b61b7602cf1";
 
             Debug.Assert(hash.ToUpper() == resultHash);
-            /*
-            Logger.Instance.writeLog("Test: Testing BreakPoint");
-
-            uint bPoint = comp.getReg(15).ReadWord(0) + 8;
-            comp.setBreakPoint(bPoint);
-            
-            comp.step();
-            comp.step();
-            
-            //System.Threading.Thread.Sleep(10000);
-            Logger.Instance.writeLog("Test: Hit Break Point");
-            Debug.Assert(comp.compStatus.statchar == 'S');
-            Debug.Assert(comp.compStatus.statval == "05");
-            uint pc = comp.getReg(15).ReadWord(0);
-            comp.step();
-            Debug.Assert(pc == comp.getReg(15).ReadWord(0));
-
-            comp.removeBreakPoint(bPoint);
-            comp.step();
-            Debug.Assert(pc < comp.getReg(15).ReadWord(0));
-            comp.run();
-            while (comp.compStatus.statchar != 'W')
-            { ;}
-
-            Debug.Assert(comp.compStatus.statchar == 'W');
-            Debug.Assert(comp.compStatus.statval == "00");
-            Logger.Instance.writeLog("Test: Removed Break Point");
-             */
 
             comp.CLEAR();
 
@@ -171,96 +143,174 @@ namespace Simulator1
         Register[] reg = new Register[16];
         CPU cpu;
         public void RunTests()
-                {
-                    //append
-                    Logger.Instance.writeLog("Test: Starting Decode Execute unit tests");
+        {
+
+            //append
+            Logger.Instance.writeLog("Test: Fetch Decode Execute");
             
-                    Logger.Instance.closeTrace();
-                    //0xe3a02030 mov r2, #48
-                    //defines 16 registers, 0 - 15
-                    for (int i = 0; i < 16; i++)
-                    {
-                       reg[i] = new Register();
-                    }
+            Logger.Instance.closeTrace();
+            //0xe3a02030 mov r2, #48
+            //defines 16 registers, 0 - 15
+            for (int i = 0; i < 16; i++)
+            {
+            reg[i] = new Register();
+            }
 
-                    cpu = new CPU(ref RAM, ref reg);
+            cpu = new CPU(ref RAM, ref reg);
+
                     
-                    //put the instruction into memory
+            //put the instruction into memory
 
-                    Logger.Instance.writeLog("TEST: mov r2, #48 : 0xe3a02030");
-                    this.runCommand(0xe3a02030);
+            Logger.Instance.writeLog("TEST: mov r2, #48 : 0xe3a02030");
+            this.runCommand(0xe3a02030);
+            Debug.Assert(reg[2].ReadWord(0) == 48);
+            Logger.Instance.writeLog("TEST: Executed");
 
-                    Debug.Assert(reg[2].ReadWord(0) == 48);
-                    Logger.Instance.writeLog("TEST: Executed");
+
+            Logger.Instance.writeLog("TEST: mov r0, r3 : 0xe1a00003");
+            reg[3].WriteWord(0, 3);
+            this.runCommand(0xe1a00003);
+            Debug.Assert(reg[0].ReadWord(0) == 3);
+            Logger.Instance.writeLog("TEST: Executed");
+
+            Logger.Instance.writeLog("TEST: mov r0, r3 lsl #4 : 0xe1a00403");
+            reg[3].WriteWord(0, 3);
+            this.runCommand(0xe1a00403);
+            Debug.Assert(reg[0].ReadWord(0) == 0x300);
+            Logger.Instance.writeLog("TEST: Executed");
 
 
-                    Logger.Instance.writeLog("TEST: mov r0, r3 : 0xe1a00003");
-                    reg[3].WriteWord(0, 3);
+            Logger.Instance.writeLog("TEST: mov r0, r1 lsl r2 : 0xe1a00211");
+            reg[0].WriteWord(0, 0);
+            reg[1].WriteWord(0, 1);
+            reg[2].WriteWord(0, 1);
+            this.runCommand(0xe1a00211);
+            Debug.Assert(reg[0].ReadWord(0) == 0x2);
+            Logger.Instance.writeLog("TEST: Executed");
 
-                    this.runCommand(0xe1a00003);
+            Logger.Instance.writeLog("TEST: mov r0, r1 lsr r2 : 0xe1a00231");
+            reg[0].WriteWord(0, 0);
+            reg[1].WriteWord(0, 0xF);
+            reg[2].WriteWord(0, 1);
+            this.runCommand(0xe1a00231);
+            Debug.Assert(reg[0].ReadWord(0) == 0x7);
+            Logger.Instance.writeLog("TEST: Executed");
+
+
+            Logger.Instance.writeLog("TEST: mov r0, r1 asr r2 : 0xe1a00251");
+            reg[0].WriteWord(0, 0);
+            reg[1].WriteWord(0, 0x8000000F);
+            reg[2].WriteWord(0, 1);
+            this.runCommand(0xe1a00251);
+            Debug.Assert(reg[0].ReadWord(0) == 0xC0000007);
+            Logger.Instance.writeLog("TEST: Executed");
+
+            Logger.Instance.writeLog("TEST: mov r0, r1 ror r2 : 0xe1a00271");
+            reg[0].WriteWord(0, 0);
+            reg[1].WriteWord(0, 0xF);
+            reg[2].WriteWord(0, 2);
+            this.runCommand(0xe1a00271);
+            Debug.Assert(reg[0].ReadWord(0) == 0xC0000003);
+            Logger.Instance.writeLog("TEST: Executed");
+
+            Logger.Instance.writeLog("TEST: mvn R3, 1 : 0xe1e03001");
+            reg[3].WriteWord(0, 0);
+            reg[1].WriteWord(0, 0x6);
+            this.runCommand(0xe1e03001);
+            Debug.Assert(reg[3].ReadWord(0) == 0xFFFFFFF9);
+            Logger.Instance.writeLog("TEST: Executed");
+
+            Logger.Instance.writeLog("TEST: rsb r0, r1, r2 : 0xe1610002");
+            reg[0].WriteWord(0, 0);
+            reg[1].WriteWord(0, 8);
+            reg[2].WriteWord(0, 10);
+            this.runCommand(0xe1610002);
+            Debug.Assert(reg[0].ReadWord(0) == 5);
+            Logger.Instance.writeLog("TEST: Executed");
                     
-                    Debug.Assert(reg[0].ReadWord(0) == 3);
-                    Logger.Instance.writeLog("TEST: Executed");
+            Logger.Instance.writeLog("TEST: str r2, [r1] : 0xe5812000");
+            reg[1].WriteWord(0, 0x40);
+            reg[2].WriteWord(0, 0x1234);
+            this.runCommand(0xe5812000);
+            Debug.Assert(RAM.ReadWord(0x40) == 0x1234);
+            Logger.Instance.writeLog("TEST: Executed");
 
-                    Logger.Instance.writeLog("TEST: mov r0, r3 lsl #4 : 0xe1a00403");
-                    reg[3].WriteWord(0, 3);
-        
-                    this.runCommand(0xe1a00403);
-                  
-                    Debug.Assert(reg[0].ReadWord(0) == 0x300);
-                    Logger.Instance.writeLog("TEST: Executed");
-
-                    //test 0xe28db004 add r9, r8, #4
-                    reg[8].WriteWord(0, 10);
-                    this.runCommand(0xe2889004);
-
-                    Debug.Assert(reg[9].ReadWord(0) == 14);
-                    Logger.Instance.writeLog("TEST: Add");
-
-                    //test 0xe24dd008 sub r13, r13, #8
-                    reg[13].WriteWord(0, 10);
-                    this.runCommand(0xe24dd008);
-                    Debug.Assert(reg[13].ReadWord(0) == 2);
-                    Logger.Instance.writeLog("TEST: Sub");
-
-                    //test 0xeb000006 bxl 6;
-
-                    reg[15].WriteWord(0, 0);
-                    reg[14].WriteWord(0, 48);
-                    this.runCommand(0xeb000006);
-                    Debug.Assert(reg[15].ReadWord(0) == 24);
-                    Debug.Assert(reg[14].ReadWord(0) == 0);
-                    Logger.Instance.writeLog("TEST: Branch");
+            Logger.Instance.writeLog("TEST: ldr r2, [r1] : 0xe5912000");
+            reg[1].WriteWord(0, 0x40);
+            RAM.WriteWord(0x40, 0x1234);
+            this.runCommand(0xe5912000);
+            Debug.Assert(reg[2].ReadWord(0) == 0x1234);
+            Logger.Instance.writeLog("TEST: Executed");
 
 
+            Logger.Instance.writeLog("TEST: Add R9, R8, #2147483648 : 0xe2889102");
+            reg[8].WriteWord(0, 10);
+            this.runCommand(0xe2889102);
+            Debug.Assert(reg[9].ReadWord(0) == 2147483648 + 10);
+            Logger.Instance.writeLog("TEST: Executed");
 
-                    //test 0xe92d4800 strm r1, r14, r11 U = 0 P = 1 W = 1
-                    reg[11].WriteWord(0, 0x4F3);
-                    reg[14].WriteWord(0, 0x48);
-                    reg[1].WriteWord(0, 0x20);
-                    this.runCommand(0xe9214800);
+
+            //test 0xe24dd008 sub r13, r13, #8
+            Logger.Instance.writeLog("TEST: sub R12, R13, #8 : 0xe24dd008");
+            reg[13].WriteWord(0, 10);
+            reg[12].WriteWord(0, 0);
+            this.runCommand(0xe24dc008);
+            Debug.Assert(reg[12].ReadWord(0) == 2);
+            Logger.Instance.writeLog("TEST: Executed");
+
+            //test 0xeb000006 bxl 6;
+            Logger.Instance.writeLog("TEST: BX #6 : 0xeb000006");
+            reg[15].WriteWord(0, 0);
+            reg[14].WriteWord(0, 48);
+            this.runCommand(0xeb000006);
+            Debug.Assert(reg[15].ReadWord(0) == 24);
+            Debug.Assert(reg[14].ReadWord(0) == 0);
+            Logger.Instance.writeLog("TEST: Executed");
+
+
+
+            //test 0xe92d4800 strm r1, r14, r11 U = 0 P = 1 W = 1
+            Logger.Instance.writeLog("TEST: strm - r1, r14, r11 ! : 0xe9214800");
+            reg[11].WriteWord(0, 0x4F3);
+            reg[14].WriteWord(0, 0x48);
+            reg[1].WriteWord(0, 0x20);
+            this.runCommand(0xe9214800);
 
             //lower register is always lower in memory
-                    Debug.Assert(RAM.ReadWord(0x18) == 0x4F3);
-                    Debug.Assert(RAM.ReadWord(0x1c) == 0x48);
-                    Debug.Assert(reg[1].ReadWord(0) == 24);
+            Debug.Assert(RAM.ReadWord(0x18) == 0x4F3);
+            Debug.Assert(RAM.ReadWord(0x1c) == 0x48);
+            Debug.Assert(reg[1].ReadWord(0) == 24);
+            Logger.Instance.writeLog("TEST: Executed");
 
-                    //test 0xe88d4800 strm r13, r14, r11 U = 1 P = 0 W = 0
-                    reg[11].WriteWord(0, 0x4F3);
-                    reg[14].WriteWord(0, 0x48);
-                    reg[1].WriteWord(0, 0x20);
-                    this.runCommand(0xe8814800);
+            //test 0xe88d4800 strm r13, r14, r11 U = 1 P = 0 W = 0
+            Logger.Instance.writeLog("TEST: strm r1, r14, r11 : 0xe8214800");
+            reg[11].WriteWord(0, 0x4F3);
+            reg[14].WriteWord(0, 0x48);
+            reg[1].WriteWord(0, 0x20);
+            this.runCommand(0xe8814800);
+            Debug.Assert(RAM.ReadWord(0x20) == 0x4f3);
+            Debug.Assert(RAM.ReadWord(0x24) == 0x48);
+            Debug.Assert(reg[1].ReadWord(0) == 0x20);
+            Logger.Instance.writeLog("TEST: Executed");
 
-                    Debug.Assert(RAM.ReadWord(0x20) == 0x4f3);
-                    Debug.Assert(RAM.ReadWord(0x24) == 0x48);
-                    Debug.Assert(reg[1].ReadWord(0) == 0x20);
-                    Logger.Instance.writeLog("TEST: Store Multiple");
+            Logger.Instance.writeLog("TEST: ldrm r0, r13, r1 : 0xe9904002");
+            reg[0].WriteWord(0, 0x20);
+            reg[13].WriteWord(0, 0);
+            reg[1].WriteWord(0, 0);
+            this.runCommand(0xe8902002);
+            Debug.Assert(reg[1].ReadWord(0) == 0x4f3);
+            Debug.Assert(reg[13].ReadWord(0) == 0x48);
+            Logger.Instance.writeLog("TEST: Executed");
 
-                    Logger.Instance.writeLog("TEST: All Decode/Execute Tests Passed");
 
-                    Logger.Instance.closeTrace();
+
+
+
+            Logger.Instance.writeLog("TEST: All Decode/Execute Tests Passed");
+
+            Logger.Instance.closeTrace();
  
-                }
+        }
 
         private void runCommand(uint p)
         {
