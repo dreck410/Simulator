@@ -328,7 +328,22 @@ namespace Simulator1
             {
 
                 ELFReader e = new ELFReader();
-                byte[] elfArray = File.ReadAllBytes(file);
+                byte[] elfArray;
+                try
+                {
+                    elfArray = File.ReadAllBytes(file);
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("File not found");
+                    Logger.Instance.writeLog("File not found");
+                    System.Environment.Exit(1);
+                    //throw;
+                }
+
+                elfArray = File.ReadAllBytes(file);
+
+
                 if (elfArray.Length <= Option.Instance.getMemSize())
                 {
                     //introspection!!!Woah!!!
