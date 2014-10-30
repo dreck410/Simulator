@@ -20,6 +20,8 @@ namespace Simulator1
     {
         static void Main(string[] args)
         {
+
+            Logger.Instance.clearLog();
             if (Option.Instance.parseArgs(args))    //verify the proper command line input
             {
                 Logger.Instance.clearLog();
@@ -27,13 +29,20 @@ namespace Simulator1
                 //runs test cases
                 if (Option.Instance.getTest())
                 {
-                   
-                    TestRam.RunTests();
-                    TestSimulator.RunTests();
-                    TestDecodeExecute TFDE = new TestDecodeExecute();
-                    TFDE.RunTests();
-
-                    Logger.Instance.writeLog("TEST: Finished\n\n\n------------------------------");
+                    try
+                    {
+                        TestRam.RunTests();
+                        TestSimulator.RunTests();
+                        TestDecodeExecute TFDE = new TestDecodeExecute();
+                        TFDE.RunTests();
+                        Console.WriteLine("Tests Run");
+                        Logger.Instance.writeLog("TEST: Finished\n\n\n------------------------------");
+                    }
+                    catch (Exception)
+                    {
+                        Console.WriteLine("Test Failed please see log.txt for details");
+                        Logger.Instance.writeLog("\n\n\nTest: Failed\n\n\n");
+                    }
                     
                 }
 
@@ -66,9 +75,8 @@ namespace Simulator1
                 //if debug flag is not set. run
 
                 
-                danielTesting(args);
+            //    danielTesting(args);
 
-                Logger.Instance.clearLog();
             
             }
             

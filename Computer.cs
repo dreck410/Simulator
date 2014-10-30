@@ -335,8 +335,8 @@ namespace Simulator1
                 }
                 catch (Exception)
                 {
-                    Console.WriteLine("File not found");
-                    Logger.Instance.writeLog("File not found");
+                    Console.WriteLine("File not found :" + file);
+                    Logger.Instance.writeLog("File not found: " + file);
                     System.Environment.Exit(1);
                     //throw;
                 }
@@ -440,7 +440,8 @@ namespace Simulator1
         {
             //reset logic
             this.CLEAR();
-            readELF(Option.Instance.getFile(), Option.Instance.getMemSize());
+            if(Option.Instance.getFile() != "")
+                readELF(Option.Instance.getFile(), Option.Instance.getMemSize());
             reg[13].WriteWord(0, 0x7000);
             step_number = 1;
             Logger.Instance.writeLog("***** Reset *****\n");

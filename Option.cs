@@ -50,7 +50,7 @@ namespace Simulator1
         public void getError(string inpu)
         {
             string output = inpu;
-            output += "\nValid input is: armsim [--load elf-file] [ --mem memory-size ] [ --test] [--debug]";
+            output += "\nValid options are:  [--load elf-file] [ --mem memory_size ] [ --test] [--debug] [--exec]";
             Console.WriteLine(output);
         }
 
