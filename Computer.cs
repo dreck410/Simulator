@@ -176,6 +176,7 @@ namespace Simulator1
         private bool isBreakPoint(Memory rawInstruction)
         {
             bool output = false;
+            //0xE120 00 7 0
             if (!rawInstruction.TestFlag(0,27) &&
                 !rawInstruction.TestFlag(0,26) &&
                 !rawInstruction.TestFlag(0,25) &&
@@ -184,11 +185,11 @@ namespace Simulator1
                 !rawInstruction.TestFlag(0,22) &&
                 rawInstruction.TestFlag(0,21) &&
                 !rawInstruction.TestFlag(0,20) &&
-                rawInstruction.TestFlag(0,7) &&
-                !rawInstruction.TestFlag(0,6) &&
-                !rawInstruction.TestFlag(0,5) &&
-                !rawInstruction.TestFlag(0,4))
-                output = true;
+                !rawInstruction.TestFlag(0,7) &&
+                rawInstruction.TestFlag(0,6) &&
+                rawInstruction.TestFlag(0,5) &&
+                rawInstruction.TestFlag(0, 4)) { output = true; }
+                
             
             return output;
         }
@@ -255,7 +256,7 @@ namespace Simulator1
         {
             RAM.CLEAR();
             clearRegisters();
-            Logger.Instance.writeLog("COMP: RESET");
+            Logger.Instance.writeLog("COMP: Clear");
         }
 
         /// <summary>
@@ -269,6 +270,7 @@ namespace Simulator1
 
             uint top12 = (uint)(immed & 0xFFF0) << 4;
             uint bot4 = (uint)immed & 0x000F;
+
             UInt32 breakPointValue = 0xE1200070 + top12 + bot4;
             uint saveCommand = RAM.ReadWord(addr);
 
@@ -591,7 +593,7 @@ namespace Simulator1
                             endedStatus.statchar = 'W';
                             endedStatus.statval = "00";
                             compStatus = endedStatus;
-                            this.CLEAR();
+                            this.reset();
                             return;
                         }
 

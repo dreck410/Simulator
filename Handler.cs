@@ -292,6 +292,19 @@ namespace Simulator1
                         // [requiring 8 bits ea.] + 1 extra bit)                                
                         //this.Respond("PacketSize=79", ns);
                         this.Respond("", ns);
+                    
+                    }
+                    else if (cmd.StartsWith("qRcmd"))
+                    {
+                        Console.WriteLine("Trace!!");
+                        if (Logger.Instance.toggleTrace())
+                        {
+                            this.Respond("+", ns);
+                        }
+                        else
+                        {
+                            this.Respond("-", ns);
+                        }
                     }
 
                     break;
@@ -304,7 +317,10 @@ namespace Simulator1
                        Computer.Instance.compStatus.statchar,
                        Computer.Instance.compStatus.statval), ns);
                     break;
-
+                case 't':
+                        Console.WriteLine("Trace file toggle");
+                        this.Respond("+",ns);
+                    break;
                 case 'v':
                     if (cmd.StartsWith("vRun"))
                     {
@@ -353,6 +369,7 @@ namespace Simulator1
 
                 default:
                     this.Respond("", ns);
+                    Console.WriteLine("What did we get");
                     break;
             }                    
                     

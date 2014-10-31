@@ -40,12 +40,13 @@ namespace Simulator1
         public bool getTraceStatus() { return trace_is_open; }
 
         //switches trace from on->off or off->on
-        public void toggleTrace()
+        public bool toggleTrace()
         {
             if (trace_is_open) 
             {
                 this.closeTrace();
                 this.writeLog("Trace: Closed");
+                return false;
             }
             else
             {
@@ -53,7 +54,9 @@ namespace Simulator1
                 {
                     this.openTrace();
                     this.writeLog("Trace: Opened");
-                }
+                } 
+                return true;
+
             }
         }
         //closes the trace file
@@ -103,7 +106,7 @@ namespace Simulator1
                                     " 0=" + myComp.getReg(0).getRegString() + ' ' +
                                     " 1=" + myComp.getReg(1).getRegString() + ' ' +
                                     " 2=" + myComp.getReg(2).getRegString() + ' ' +
-                                    " 3=" + myComp.getReg(3).getRegString()).ToUpper());
+                                    " 3=" + myComp.getReg(3).getRegString() + ' ').ToUpper());
 
                     //r4 r5 r6 r7 r8 r9
                     this.trace.WriteLine(("        4=" + myComp.getReg(4).getRegString() + ' ' +
@@ -111,13 +114,13 @@ namespace Simulator1
                                     " 6=" + myComp.getReg(6).getRegString() + ' ' +
                                     " 7=" + myComp.getReg(7).getRegString() + ' ' +
                                     " 8=" + myComp.getReg(8).getRegString() + ' ' +
-                                    " 9=" + myComp.getReg(9).getRegString()).ToUpper());
+                                    " 9=" + myComp.getReg(9).getRegString() + ' ').ToUpper());
                     //r10 r11 r12 r13 r14
                     this.trace.WriteLine(("       10=" + myComp.getReg(10).getRegString() + ' ' +
                                     "11=" + myComp.getReg(11).getRegString() + ' ' +
                                     "12=" + myComp.getReg(12).getRegString() + ' ' +
                                     "13=" + myComp.getReg(13).getRegString() + ' ' +
-                                    "14=" + myComp.getReg(14).getRegString()).ToUpper());
+                                    "14=" + myComp.getReg(14).getRegString() + ' ').ToUpper());
                     this.trace.Flush();
                 }
             }

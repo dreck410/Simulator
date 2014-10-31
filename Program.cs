@@ -59,7 +59,7 @@ namespace Simulator1
                         //loaded and wants to be executed.
                         Computer.Instance.run();
                         while (Computer.Instance.getThreadStatus()) { ;}
-                        System.Environment.Exit(0);
+                       // System.Environment.Exit(0);
 
                     }
                 }
