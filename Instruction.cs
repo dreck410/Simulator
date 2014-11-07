@@ -17,6 +17,8 @@ namespace Simulator1
 
         public bool S { get; set; }
 
+      //  public string commandStr { get; set; }
+
         public bool N, Z, C, F;
 
 
@@ -32,9 +34,9 @@ namespace Simulator1
         
         public uint rm { get; set; }
 
-        public virtual void run(ref Register[] reg, ref Memory RAM)
+        public virtual string run(ref Register[] reg, ref Memory RAM)
         {
-            Logger.Instance.writeLog("CMD: UNDISCOVERED");
+            return "CMD: UNDISCOVERERD";
         }
 
 
@@ -60,7 +62,7 @@ namespace Simulator1
 
 
 
-        internal bool checkCond(bool[] flagsNZCF)
+        internal string checkCond(bool[] flagsNZCF)
         {
             bool N = flagsNZCF[0];
             bool Z = flagsNZCF[1];
@@ -69,61 +71,61 @@ namespace Simulator1
             switch (cond)
             {
                 case 0x0:
-                    if (Z) { return true; }
+                    if (Z) { return "EQ"; }
                     break;
                 case 0x1:
-                    if (!Z) { return true; }
+                    if (!Z) { return "NE"; }
                     break;
                 case 0x2:
-                    if (C) { return true; }
+                    if (C) { return "CS"; }
                     break;
                 case 0x3:
-                    if (!C) { return true; }
+                    if (!C) { return "CC"; }
                     break;
                 case 0x4:
-                    if (N) { return true; }
+                    if (N) { return "MI"; }
                     break;
                 case 0x5:
-                    if (!N) { return true; }
+                    if (!N) { return "PL"; }
                     break;
                 case 0x6:
-                    if (F) { return true; }
+                    if (F) { return "VS"; }
                     break;
                 case 0x7:
-                    if (!F) { return true; }
+                    if (!F) { return "VC"; }
                     break;
                 case 0x8:
-                    if ((C && !F)) { return true; }
+                    if ((C && !F)) { return "HI"; }
                     break;
                 case 0x9:
-                    if ((!C && F)) { return true; }
+                    if ((!C && F)) { return "LS"; }
                     break;
                 case 0xa:
-                    if ((N == F)) { return true; }
+                    if ((N == F)) { return "GE"; }
                     break;
                 case 0xb:
-                    if ((N != F)) { return true; }
+                    if ((N != F)) { return "LT"; }
                     break;
                 case 0xc:
-                    if ((!Z && N == F)) { return true; }
+                    if ((!Z && N == F)) { return "GT"; }
                     break;
                 case 0xd:
-                    if ((Z || N != F)) { return true; }
+                    if ((Z || N != F)) { return "LE"; }
                     break;
                 case 0xe:
-                    return true;
+                    return "";
                     break;
                 case 0xf:
-                    return false;
+                    return "Dont execute";
                     break;
                 default:
-                    return false;
+                    return "Dont execute";
                     break;
             }
-            
 
 
-            return false;
+
+            return "Dont execute";
         }
     }
 
@@ -162,7 +164,7 @@ namespace Simulator1
 
         }
 
-        public override void run(ref Register[] reg, ref Memory RAM)
+        public override string run(ref Register[] reg, ref Memory RAM)
         {
             //base.run(ref reg, ref RAM);
             Logger.Instance.writeLog(string.Format("CMD: Data Movement : 0x{0}", Convert.ToString(this.originalBits, 16)));
@@ -208,9 +210,8 @@ namespace Simulator1
                         RAM.WriteWord(addr, RdValue);
                     }
                 }
-
-                Logger.Instance.writeLog(string.Format("CMD: {0} {1}, 0x{2} : 0x{3} ", cmd, RdValue,
-                    Convert.ToString(addr, 16), Convert.ToString(this.originalBits, 16)));
+                return string.Format("CMD: {0} {1}, 0x{2} : 0x{3} ", cmd, RdValue,
+                    Convert.ToString(addr, 16), Convert.ToString(this.originalBits, 16));
             }
 
 
@@ -325,7 +326,7 @@ namespace Simulator1
         }
 
 
-        public override void run(ref Register[] reg, ref Memory RAM)
+        public override string run(ref Register[] reg, ref Memory RAM)
         {
             Logger.Instance.writeLog(string.Format("CMD: Data Manipulation 0x{0}", Convert.ToString(this.originalBits, 16)));
 
@@ -333,19 +334,19 @@ namespace Simulator1
                 {
                     case 0:
                         //and
-                        this.and(ref reg, ref RAM);
+                        return this.and(ref reg, ref RAM);
                         break;
                     case 1: //EOR
-                        this.eor(ref reg, ref RAM);
+                        return this.eor(ref reg, ref RAM);
                         break;
                     case 2: //SUb
-                        this.sub(ref reg, ref RAM);
+                        return this.sub(ref reg, ref RAM);
                         break;
                     case 3: //RSB
-                        this.rsb(ref reg, ref RAM);
+                        return this.rsb(ref reg, ref RAM);
                         break;
                     case 4: //ADD
-                        this.add(ref reg, ref RAM);
+                        return this.add(ref reg, ref RAM);
                         break;
                     case 5: //ADC
                         break;
@@ -358,34 +359,35 @@ namespace Simulator1
                     case 9: //teq
                         break;
                     case 10: //cmp
-                        this.cmp(ref reg, ref RAM);
+                        return this.cmp(ref reg, ref RAM);
                         break;
                     case 11: //cmn
                         break;
                     case 12: //oor
-                        this.oor(ref reg, ref RAM);
+                        return this.oor(ref reg, ref RAM);
                         break;
                     case 13: //mov
-                        this.mov(ref reg, ref RAM);
+                        return this.mov(ref reg, ref RAM);
                         break;
                     case 14: //bic
-                        this.bic(ref reg, ref RAM);
+                        return this.bic(ref reg, ref RAM);
                         break;
                     case 15: //mvn
-                        this.mvn(ref reg, ref RAM);
+                        return this.mvn(ref reg, ref RAM);
                         break;
                     case 0x1F:
-                        this.mul(ref reg, ref RAM);
+                        return this.mul(ref reg, ref RAM);
                         break;
 
                     default:
                         //something bad
                         break;
                 }//switch
+                return string.Format("Invalid opCode not yet implemented {0}", this.opcode);
             
         }
 
-        private void mul(ref Register[] reg, ref Memory RAM)
+        private string mul(ref Register[] reg, ref Memory RAM)
         {
             uint RmValue = reg[this.shiftOp.Rm].ReadWord(0, true);
             uint RsValue = reg[this.shiftOp.Rs].ReadWord(0, true);
@@ -394,117 +396,124 @@ namespace Simulator1
                 Logger.Instance.writeLog("ERR: Multiply to large");
             }
             reg[this.rn].WriteWord(0, product);
-            Logger.Instance.writeLog(String.Format("CMD: MUL R{0}, {1}, {2} : 0x{3}",
-                this.rd, RmValue, RsValue, Convert.ToString(this.originalBits, 16)));
+            return String.Format("CMD: MUL__ R{0}, {1}, {2} : 0x{3}",
+                this.rd, RmValue, RsValue, Convert.ToString(this.originalBits, 16));
 
         }   
 
-        private void bic(ref Register[] reg, ref Memory RAM)
+        private string bic(ref Register[] reg, ref Memory RAM)
         {
             this.shiftOp = figureOutShift(this.I, this.shiftOp, reg[this.shiftOp.Rm].ReadWord(0, true), reg);
             uint RnValue = reg[this.rn].ReadWord(0, true);
 
             reg[this.rd].WriteWord(0, (RnValue & (~ this.shiftOp.offset)));
 
-            Logger.Instance.writeLog(String.Format("CMD: BIC R{0},{1}, {2} : 0x{3}",
+            return (String.Format("CMD: BIC__ R{0},{1}, {2} : 0x{3}",
                 this.rd, RnValue, this.shiftOp.offset, Convert.ToString(this.originalBits, 16)));
         }
 
 
         // This can be refactored
         //maybe pass in two values in the order you need them and an operator....
-        private void eor(ref Register[] reg, ref Memory RAM)
+        private string eor(ref Register[] reg, ref Memory RAM)
         {
             this.shiftOp = figureOutShift(this.I, this.shiftOp, reg[this.shiftOp.Rm].ReadWord(0, true), reg);
             uint RnValue = reg[this.rn].ReadWord(0, true);
             reg[this.rd].WriteWord(0, (RnValue ^ this.shiftOp.offset));
-            Logger.Instance.writeLog(String.Format("CMD: EOR R{0}, {1}, {2} : 0x{3}",
+            return (String.Format("CMD: EOR__ R{0}, {1}, {2} : 0x{3}",
                 this.rd, RnValue, this.shiftOp.offset, Convert.ToString(this.originalBits, 16)));
         }
 
-        private void oor(ref Register[] reg, ref Memory RAM)
+        private string oor(ref Register[] reg, ref Memory RAM)
         {
             this.shiftOp = figureOutShift(this.I, this.shiftOp, reg[this.shiftOp.Rm].ReadWord(0, true), reg);
             uint RnValue = reg[this.rn].ReadWord(0, true);
             reg[this.rd].WriteWord(0, (RnValue | this.shiftOp.offset));
-            Logger.Instance.writeLog(String.Format("CMD: OOR R{0},{1},{2} : 0x{3}",
+            return (String.Format("CMD: OOR__ R{0},{1},{2} : 0x{3}",
                 this.rd, RnValue, this.shiftOp.offset, Convert.ToString(this.originalBits, 16)));
         }
 
-        private void and(ref Register[] reg, ref Memory RAM)
+        private string and(ref Register[] reg, ref Memory RAM)
         {
             this.shiftOp = figureOutShift(this.I, this.shiftOp, reg[this.shiftOp.Rm].ReadWord(0, true), reg);
             uint RnValue = reg[this.rn].ReadWord(0, true);
             reg[this.rd].WriteWord(0, (RnValue & this.shiftOp.offset));
-            Logger.Instance.writeLog(String.Format("CMD: AND R{0}, {1}, {2} : 0x{3}",
+            return (String.Format("CMD: AND__ R{0}, {1}, {2} : 0x{3}",
                 this.rd, RnValue, this.shiftOp.offset, Convert.ToString(this.originalBits, 16)));
         }
 
-        private void rsb(ref Register[] reg, ref Memory RAM)
+        private string rsb(ref Register[] reg, ref Memory RAM)
         {
             this.shiftOp = figureOutShift(this.I, this.shiftOp, reg[this.shiftOp.Rm].ReadWord(0, true), reg);
             uint RnValue = reg[this.rn].ReadWord(0, true);
             reg[this.rd].WriteWord(0, (this.shiftOp.offset - RnValue));
-            Logger.Instance.writeLog(String.Format("CMD: rsb R{0}, {1}, {2} : 0x{3}",
+            return (String.Format("CMD: rsb__ R{0}, {1}, {2} : 0x{3}",
                 this.rd, RnValue, this.shiftOp.offset, Convert.ToString(this.originalBits, 16)));
         }
 
-        private void mvn(ref Register[] reg, ref Memory RAM)
+        private string mvn(ref Register[] reg, ref Memory RAM)
         {
             this.shiftOp = figureOutShift(this.I, this.shiftOp, reg[this.shiftOp.Rm].ReadWord(0, true), reg);
 
             reg[this.rd].WriteWord(0, ~ this.shiftOp.offset);
-            Logger.Instance.writeLog(String.Format("CMD: mvn R{0}, {1} : 0x{2}",
+            return (String.Format("CMD: mvn__ R{0}, {1} : 0x{2}",
                 this.rd, this.shiftOp.offset, Convert.ToString(this.originalBits, 16)));
         }
 
-        private void cmp(ref Register[] reg, ref Memory RAM)
+        private string cmp(ref Register[] reg, ref Memory RAM)
         {
+
+            S = true;
             this.shiftOp = figureOutShift(this.I, this.shiftOp, reg[this.shiftOp.Rm].ReadWord(0, true), reg);
             uint RnVal = reg[this.rn].ReadWord(0, true);
+
             uint cmpVal = RnVal - this.shiftOp.offset;
+
             Memory alu = new Memory(4);
             alu.WriteWord(0, cmpVal);
             //set N flag
+            uint biggest32BitUint = 4294967295;
             N = alu.TestFlag(0,31);
             Z = alu.ReadWord(0, true) == 0;
-            Logger.Instance.writeLog("Fix compare C and V flags");
-            C = false;
+
+            Logger.Instance.writeLog("****\n\tFix compare C and V flags\n");
+            C = (RnVal > biggest32BitUint - this.shiftOp.offset);
+
             F = false;
-            Logger.Instance.writeLog(String.Format("CMD: cmp R{0}, {1} : 0x{2}",
+            return (String.Format("CMD: cmp__ R{0}, {1} : 0x{2}",
                 this.rn, this.shiftOp.offset, Convert.ToString(this.originalBits, 16)));
    
 
         }
 
 
-        public void add(ref Register[] reg, ref Memory RAM)
+        public string add(ref Register[] reg, ref Memory RAM)
         {
             this.shiftOp = figureOutShift(this.I, this.shiftOp, reg[this.shiftOp.Rm].ReadWord(0, true), reg);
             uint RnValue = reg[this.rn].ReadWord(0, true);
             reg[this.rd].WriteWord(0, (RnValue + this.shiftOp.offset));
-            Logger.Instance.writeLog(String.Format("CMD: ADD R{0}, {1}, {2} : 0x{3}",
+            return (String.Format("CMD: ADD__ R{0}, {1}, {2} : 0x{3}",
                 this.rd, RnValue, this.shiftOp.offset, Convert.ToString(this.originalBits, 16)));
         }
 
 
-        public void sub(ref Register[] reg, ref Memory RAM)
+        public string sub(ref Register[] reg, ref Memory RAM)
         {
             this.shiftOp = figureOutShift(this.I, this.shiftOp, reg[this.shiftOp.Rm].ReadWord(0, true), reg);
             uint RnValue = reg[this.rn].ReadWord(0, true);
             reg[this.rd].WriteWord(0, (RnValue - this.shiftOp.offset));
-            Logger.Instance.writeLog(String.Format("CMD: sub R{0}, {1}, {2} : 0x{3}",
+            return (String.Format("CMD: sub__ R{0}, {1}, {2} : 0x{3}",
                 this.rd, RnValue, this.shiftOp.offset, Convert.ToString(this.originalBits, 16)));
 
         }
 
-        private void mov(ref Register[] reg, ref Memory RAM)
+        private string mov(ref Register[] reg, ref Memory RAM)
         {
 
             this.shiftOp = figureOutShift(this.I, this.shiftOp, reg[this.shiftOp.Rm].ReadWord(0, true), reg);
 
             reg[this.rd].WriteWord(0, this.shiftOp.offset);
-            Logger.Instance.writeLog(String.Format("CMD: mov R{0}, {1} : 0x{2}",
+            return (String.Format("CMD: mov__ R{0}, {1} : 0x{2}",
                 this.rd, this.shiftOp.offset, Convert.ToString(this.originalBits, 16)));
         }
 
@@ -517,39 +526,52 @@ namespace Simulator1
         public bool LN { get; set; }
         //23bit long offset
         public int offset { get; set; }
-
+        bool immediate = true;
+        uint regNum;
 
         public override void parse(Memory command)
         {
-            this.LN = command.TestFlag(0, 24);
-            this.offset = ((int)command.ReadWord(0, true) & 0x00FFFFFF) << 2;
+            // not immediate
+            if ((0x012FFF10 & command.ReadWord(0)) == 0x012FFF10)
+            {
+                immediate = false;
+                this.regNum = (command.ReadWord(0) & 0xF);
+            }
+            else
+            {
+                this.LN = command.TestFlag(0, 24);
+                this.offset = ((int)command.ReadWord(0, true) & 0x00FFFFFF) << 2;
+            }
         }
 
 
 
-        public override void run(ref Register[] reg, ref Memory RAM)
+        public override string run(ref Register[] reg, ref Memory RAM)
         {
-           
+            uint newAddress = 0;
+            if (immediate)
+            {
                 uint curAddr = reg[15].ReadWord(0, true);
-
                 if (this.LN)
                 {
                     //store a return address
-                    reg[14].WriteWord(0, curAddr);
+                    reg[14].WriteWord(0, curAddr - 8);
                 }
-                uint newAddress = (uint)(curAddr + this.offset);
-                reg[15].WriteWord(0, newAddress);
-
-                Logger.Instance.writeLog(string.Format("CMD: BX 0x{0} : 0x{1}", newAddress, Convert.ToString(this.originalBits, 16)));
+                newAddress = (uint)(curAddr + this.offset);
             }
+            else
+            {
+                //not immediate
+                newAddress = (reg[this.regNum].ReadWord(0, true) & 0xFFFFFFFE);
+            }
+            reg[15].WriteWord(0, newAddress);
+            return (string.Format("CMD: B__ #{0} : 0x{1}", newAddress, Convert.ToString(this.originalBits, 16)));
+
+        }
 
 
-    }
+    }//branch class
 
-    class Multiply : Instruction
-    {
-
-    }
 
     class Swap : Instruction
     {
@@ -588,7 +610,7 @@ namespace Simulator1
         }
 
 
-        public override void run(ref Register[] reg, ref Memory RAM)
+        public override string run(ref Register[] reg, ref Memory RAM)
         {
             Logger.Instance.writeLog(string.Format("CMD: Data Move Multiple : 0x{0}", Convert.ToString(this.originalBits, 16)));
             
@@ -683,7 +705,7 @@ namespace Simulator1
                     reg[this.rn].WriteWord(0, n);
                 }
 
-                Logger.Instance.writeLog(string.Format("CMD: {0} r{1}{2}", Scom, this.rn, registers));
+                return (string.Format("CMD: {0}__ r{1}{2}", Scom, this.rn, registers));
       
 
         }//LoadMultStoreMult

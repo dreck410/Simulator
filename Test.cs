@@ -151,9 +151,10 @@ namespace Simulator1
             Logger.Instance.closeTrace();
             //0xe3a02030 mov r2, #48
             //defines 16 registers, 0 - 15
-            for (int i = 0; i < 16; i++)
+            for (uint i = 0; i < 16; i++)
             {
-            reg[i] = new Register();
+                this.reg[i] = new Register();
+                this.reg[i].regID = i;
             }
 
             cpu = new CPU(ref RAM, ref reg);
@@ -281,11 +282,18 @@ namespace Simulator1
             reg[15].WriteWord(0, 0);
             reg[14].WriteWord(0, 48);
             this.runCommand(0xeb000006);
-            Debug.Assert(reg[15].ReadWord(0) == 24);
+            Debug.Assert(reg[15].ReadWord(0) == 32);
             Debug.Assert(reg[14].ReadWord(0) == 0);
             Logger.Instance.writeLog("TEST: Executed\n");
 
 
+            //test 0xe12fff12
+            Logger.Instance.writeLog("TEST: BX R2");
+            reg[2].WriteWord(0, 0x100);
+            reg[15].WriteWord(0, 0);
+            this.runCommand(0xE12FFF12);
+            Debug.Assert(reg[15].ReadWord(0) == 0x100);
+            Logger.Instance.writeLog("Test: Executed\n");
 
             //test 0xe92d4800 strm r1, r14, r11 U = 0 P = 1 W = 1
             Logger.Instance.writeLog("TEST: strm - r1, r14, r11 ! : 0xe9214800");
@@ -320,9 +328,41 @@ namespace Simulator1
             Debug.Assert(reg[13].ReadWord(0) == 0x48);
             Logger.Instance.writeLog("TEST: Executed\n");
 
+            
+            Logger.Instance.writeLog("TEST: cmp R1, R2 ");
+            reg[1].WriteWord(0, 0x10);
+            reg[2].WriteWord(0, 0x11);
+            bool[] flagsNZCF = this.runCommand(0xE1510002);
+            Debug.Assert(flagsNZCF[0]);
+            Debug.Assert(!flagsNZCF[1]);
+            Debug.Assert(!flagsNZCF[2]);
+            Debug.Assert(!flagsNZCF[3]);
+            Logger.Instance.writeLog("TEST: CMP 0x10 and 0x11");
+
+            reg[1].WriteWord(0, 0x10);
+            reg[2].WriteWord(0, 0x10);
+            flagsNZCF = this.runCommand(0xE1510002);
+            Debug.Assert(!flagsNZCF[0]);
+            Debug.Assert(flagsNZCF[1]);
+            Debug.Assert(!flagsNZCF[2]);
+            Debug.Assert(!flagsNZCF[3]);
+            Logger.Instance.writeLog("TEST: CMP 0x10 and 0x10");
+
+            reg[1].WriteWord(0, 0x10);
+            reg[2].WriteWord(0, 0x10);
+            flagsNZCF = this.runCommand(0xE1510002);
+            Debug.Assert(!flagsNZCF[0]);
+            Debug.Assert(flagsNZCF[1]);
+            Debug.Assert(!flagsNZCF[2]);
+            Debug.Assert(!flagsNZCF[3]);
+            Logger.Instance.writeLog("TEST: CMP 0x10 and 0x11");
 
 
-
+            Logger.Instance.writeLog("TEST: AddEQ R9, R8, #2147483648 : 0x02889102");
+            reg[8].WriteWord(0, 10);
+            this.runCommand(0x02889102);
+            Debug.Assert(reg[9].ReadWord(0) == 2147483648 + 10);
+            Logger.Instance.writeLog("TEST: Executed\n");
 
             Logger.Instance.writeLog("TEST: All Decode/Execute Tests Passed");
 
@@ -330,7 +370,7 @@ namespace Simulator1
  
         }
 
-        private void runCommand(uint p)
+        private bool[] runCommand(uint p)
         {
             RAM.WriteWord(0, p);
 
@@ -352,9 +392,8 @@ namespace Simulator1
             Logger.Instance.writeLog("TEST: Decoded");
 
             //exeucte the decoded Command!!
-            bool[] flags = {false,false, false,false};
-            cpu.execute(cookedInstruction, flags);
-
+            bool[] flags = {false, true, false, false};
+            return cpu.execute(cookedInstruction, flags);
         }//runTests
 
     }//testDecodeExecute

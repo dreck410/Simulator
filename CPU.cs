@@ -61,17 +61,19 @@ namespace Simulator1
         //executes the actual data by movine registers and stuff
         public bool[] execute(Instruction command, bool[] flagsNZCF)
         {
-            
-            if (command.checkCond(flagsNZCF))
+            string condition = "";
+            if ("Dont execute" != (condition = command.checkCond(flagsNZCF)))
             {
-                command.run(ref reg, ref RAM);
-                /*
+                string operation = command.run(ref reg, ref RAM);
+                operation = operation.Replace("__", condition);
+
                 if (command.S)
                 {
                     bool[] flags = { command.N, command.Z, command.C, command.F };
                     return flags;
                 }
-                 */
+
+                Logger.Instance.writeLog(operation);
             }
 
             return null;

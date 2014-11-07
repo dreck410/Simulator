@@ -114,6 +114,7 @@ namespace Simulator1
         public Memory getRAM() { return RAM; }
         public CPU getCPU() { return cpu; }
         public uint getStepNumber(){ return step_number;}
+        
 
         // returns the tracing data for gdb
         public bool getTraceStatus()
@@ -235,7 +236,7 @@ namespace Simulator1
             }
             Logger.Instance.writeLog(string.Format("RAM: Wrote info to MEM at {0}", Convert.ToString(baseAddr,16)));
             reg[13].WriteWord(0, 0x7000);
-
+            step_number = 1;
         }
 
         /// <summary>
@@ -446,6 +447,10 @@ namespace Simulator1
                 readELF(Option.Instance.getFile(), Option.Instance.getMemSize());
             reg[13].WriteWord(0, 0x7000);
             step_number = 1;
+            N = false;
+            Z = false;
+            C = false;
+            F = false;
             Logger.Instance.writeLog("***** Reset *****\n");
         }
 

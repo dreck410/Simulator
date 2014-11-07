@@ -85,7 +85,6 @@ namespace Simulator1
                     this.trace = new StreamWriter("trace.log");
                     this.trace_is_open = true;
                 }
-               // closeTrace();
             }
         }
 

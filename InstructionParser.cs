@@ -37,7 +37,12 @@ namespace Simulator1
             {
                 case 0:
                     //data manipulation 00
-
+                    if ((0x012FFF10 & command.ReadWord(0)) == 0x012FFF10)
+                    {
+                        Logger.Instance.writeLog("CMD: BX Instruction");
+                        instruct = new Branch();
+                        break;
+                    }
                     instruct = new dataManipulation();
                     break;
                 case 1:

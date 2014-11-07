@@ -335,7 +335,7 @@ namespace Simulator1
                 case 'X':
                     // WRITE DATA COMMAND
                     // Computer.Instance.writeRAM(addr, byte[]);
-                    Console.WriteLine("Write Data Command");
+                    Computer.Instance.reset();
                     Console.WriteLine(cmd);
                     this.Respond("", ns);
                     break;
