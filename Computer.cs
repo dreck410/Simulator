@@ -37,7 +37,7 @@ namespace Simulator1
         string checkSum = "";
         uint step_number = 1;
         Dictionary<uint, uint> storedCommands = new Dictionary<uint,uint>();
-
+        public uint currentAddress { get; set; }
         Register[] reg = new Register[16];
         Memory RAM;
         CPU cpu;
@@ -539,7 +539,8 @@ namespace Simulator1
                 {
                     //fetch, decode, execute commands here
                     Memory rawInstruction = cpu.fetch();
-                    Logger.Instance.writeLog(string.Format("CMD: #{0} = 0x{1}", this.step_number, Convert.ToString(rawInstruction.ReadWord(0), 16)));
+                    currentAddress = reg[15].ReadWord(0);
+                    Logger.Instance.writeLog(string.Format("CMD: #{0} = 0x{1} at 0x{2}", this.step_number, Convert.ToString(rawInstruction.ReadWord(0), 16), Convert.ToString(currentAddress, 16)));
                     //break if we fetched a zero!
                     //will change to a finish command like .exit
              //       if (rawInstruction.ReadWord(0) != 0)

@@ -98,7 +98,7 @@ namespace Simulator1
                 {
                     //step_number program_counter checksum nzcf r0 r1 r2 r3
                     this.trace.WriteLine((myComp.getStepNumber().ToString().PadLeft(6, '0') + ' ' +
-                                    myComp.getReg(15).getRegString() + ' ' +
+                                    Convert.ToString(myComp.currentAddress, 16).PadLeft(8, '0') + ' ' +
                                     myComp.getCheckSum() + ' ' +
                                     Convert.ToInt32(myComp.getFlag('N')) + Convert.ToInt32(myComp.getFlag('Z')) +
                                     Convert.ToInt32(myComp.getFlag('C')) + Convert.ToInt32(myComp.getFlag('F')) + "  " +

@@ -278,7 +278,7 @@ namespace Simulator1
             Logger.Instance.writeLog("TEST: Executed\n");
 
             //test 0xeb000006 bxl 6;
-            Logger.Instance.writeLog("TEST: BX #6 : 0xeb000006");
+            Logger.Instance.writeLog("TEST: B #6 : 0xeb000006");
             reg[15].WriteWord(0, 0);
             reg[14].WriteWord(0, 48);
             this.runCommand(0xeb000006);
@@ -286,6 +286,14 @@ namespace Simulator1
             Debug.Assert(reg[14].ReadWord(0) == 0);
             Logger.Instance.writeLog("TEST: Executed\n");
 
+            //test 0xeb000006 bxl -6;
+            Logger.Instance.writeLog("TEST: B #-24 : 0xeb8FFFFFA");
+            reg[15].WriteWord(0, 0);
+            reg[14].WriteWord(0, 48);
+            this.runCommand(0xebFFFFFA);
+            Debug.Assert(reg[15].ReadWord(0) == 0xFFFFFFF0);
+            Debug.Assert(reg[14].ReadWord(0) == 0);
+            Logger.Instance.writeLog("TEST: Executed\n");
 
             //test 0xe12fff12
             Logger.Instance.writeLog("TEST: BX R2");
@@ -338,6 +346,7 @@ namespace Simulator1
             Debug.Assert(!flagsNZCF[2]);
             Debug.Assert(!flagsNZCF[3]);
             Logger.Instance.writeLog("TEST: CMP 0x10 and 0x11");
+            Logger.Instance.writeLog("TEST: Executed\n");
 
             reg[1].WriteWord(0, 0x10);
             reg[2].WriteWord(0, 0x10);
@@ -347,6 +356,7 @@ namespace Simulator1
             Debug.Assert(!flagsNZCF[2]);
             Debug.Assert(!flagsNZCF[3]);
             Logger.Instance.writeLog("TEST: CMP 0x10 and 0x10");
+            Logger.Instance.writeLog("TEST: Executed\n");
 
             reg[1].WriteWord(0, 0x10);
             reg[2].WriteWord(0, 0x10);
@@ -356,6 +366,7 @@ namespace Simulator1
             Debug.Assert(!flagsNZCF[2]);
             Debug.Assert(!flagsNZCF[3]);
             Logger.Instance.writeLog("TEST: CMP 0x10 and 0x11");
+            Logger.Instance.writeLog("TEST: Executed\n");
 
 
             Logger.Instance.writeLog("TEST: AddEQ R9, R8, #2147483648 : 0x02889102");
