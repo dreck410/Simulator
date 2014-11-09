@@ -111,7 +111,7 @@ namespace Simulator1
                         return true; }
                     break;
                 case 0x9:
-                    if ((!C && Z)) { condStr = "LS";
+                    if ((!C || Z)) { condStr = "LS";
                         return true; }
                     break;
                 case 0xa:
@@ -632,7 +632,7 @@ namespace Simulator1
                 {
                     //store a return address
                     Logger.Instance.writeLog("Question: ASK ABOUT LINKING And SUBTRACTING 8");
-                    reg[14].WriteWord(0, curAddr - 8);
+                    reg[14].WriteWord(0, curAddr - 4);
                 }
                 newAddress = (uint)(curAddr + this.offset);
             }
