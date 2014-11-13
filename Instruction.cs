@@ -607,6 +607,7 @@ namespace Simulator1
             }
             else
             {
+                //it immediate
                 this.LN = command.TestFlag(0, 24);
                 bool isSigned = command.TestFlag(0, 23);
 
@@ -631,7 +632,7 @@ namespace Simulator1
                 if (this.LN)
                 {
                     //store a return address
-                    Logger.Instance.writeLog("Question: ASK ABOUT LINKING And SUBTRACTING 8");
+                   // Logger.Instance.writeLog("Question: ASK ABOUT LINKING And SUBTRACTING 8");
                     reg[14].WriteWord(0, curAddr - 4);
                 }
                 newAddress = (uint)(curAddr + this.offset);

@@ -97,15 +97,18 @@ namespace Simulator1
                 if (trace_is_open)
                 {
                     //step_number program_counter checksum nzcf r0 r1 r2 r3
-                    this.trace.WriteLine((myComp.getStepNumber().ToString().PadLeft(6, '0') + ' ' +
-                                    Convert.ToString(myComp.currentAddress, 16).PadLeft(8, '0') + ' ' +
-                                    myComp.getCheckSum() + ' ' +
+                    string firstLine = "";
+                    firstLine = (myComp.getStepNumber().ToString().PadLeft(6, '0') + ' ' +
+                                    Convert.ToString(myComp.currentAddress, 16).PadLeft(8, '0')).ToUpper() + ' ' +
+                                    "[sys]" + ' ' +
                                     Convert.ToInt32(myComp.getFlag('N')) + Convert.ToInt32(myComp.getFlag('Z')) +
                                     Convert.ToInt32(myComp.getFlag('C')) + Convert.ToInt32(myComp.getFlag('F')) + "  " +
-                                    " 0=" + myComp.getReg(0).getRegString() + ' ' +
+                                    (" 0=" + myComp.getReg(0).getRegString() + ' ' +
                                     " 1=" + myComp.getReg(1).getRegString() + ' ' +
                                     " 2=" + myComp.getReg(2).getRegString() + ' ' +
-                                    " 3=" + myComp.getReg(3).getRegString() + ' ').ToUpper());
+                                    " 3=" + myComp.getReg(3).getRegString() + ' ').ToUpper();
+
+                    this.trace.WriteLine(firstLine);
 
                     //r4 r5 r6 r7 r8 r9
                     this.trace.WriteLine(("        4=" + myComp.getReg(4).getRegString() + ' ' +
