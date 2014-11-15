@@ -41,7 +41,7 @@ namespace Simulator1
         Register[] reg = new Register[16];
         Memory RAM;
         CPU cpu;
-        Thread programThread, ConsoleI, ConsoleO, ConsoleIO;
+        Thread programThread, ConsoleIO;
 
         public Queue<char> inputQueue { get; set; }
 
@@ -537,12 +537,8 @@ namespace Simulator1
         private void go()
         {
             ConsoleIO = new Thread(new ThreadStart(this.io));
-        //    ConsoleI = new Thread(new ThreadStart(this.listenInputAddress));
-         //   ConsoleO = new Thread(new ThreadStart(this.listenOutputAddress));
 
             ConsoleIO.Start();
-          //  ConsoleI.Start();
-           // ConsoleO.Start();
 
             while (!ConsoleIO.IsAlive) ;
 
@@ -574,7 +570,7 @@ namespace Simulator1
                                 }
                                 else
                                 {
-                                    Logger.Instance.writeLog("CMD: Flags not updated");
+                                    //Logger.Instance.writeLog("CMD: Flags not updated");
                                 }
                                 Logger.Instance.writeTrace(this);
                                 Logger.Instance.writeLog("\n\n");
@@ -627,7 +623,6 @@ namespace Simulator1
                 Logger.Instance.writeLog("COMP: Stopped");
 
             }
-           // ConsoleI.Abort();
             ConsoleIO.Abort();
             //mutex unlock
 

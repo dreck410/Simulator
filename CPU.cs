@@ -28,10 +28,10 @@ namespace Simulator1
         //CPU instantiation
 
         public CPU(ref Memory RAM, ref Register[] reg)
-            {
-                this.RAM = RAM;
-                this.reg = reg;
-            }
+        {
+            this.RAM = RAM;
+            this.reg = reg;
+        }
 
 
         //fetches data from RAM 
@@ -53,8 +53,6 @@ namespace Simulator1
             InstructionParser parser = new InstructionParser();
             Instruction inst = parser.parse(data);
 
-
-            
             return inst;
         }
 

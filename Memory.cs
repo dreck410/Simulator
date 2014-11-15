@@ -43,7 +43,7 @@ namespace Simulator1
             return hasher.Hash(theArray);
         }
 
-
+        //gets the ram for a desired num of lines at an address
         public string getAtAddress(uint addr, int desiredLines = 8)
         {
             int numOfLines = 0;

@@ -669,20 +669,6 @@ namespace Simulator1
     }//branch class
 
 
-    class Swap : Instruction
-    {
-
-    }
-
-    class MRS : Instruction
-    {
-
-    }
-
-    class MSR : Instruction
-    {
-
-    }
 
     class dataMoveMultiple : dataMovement
     {
@@ -807,30 +793,7 @@ namespace Simulator1
         }//LoadMultStoreMult
     }
 
-    class CoProcessorInstruction : Instruction
-    {
-        coProcessorOperand operand;
-    }
 
-    class Transfer : CoProcessorInstruction
-    {
-
-    }
-
-    class Op : CoProcessorInstruction
-    {
-
-    }
-
-    class RTransfer : CoProcessorInstruction
-    {
-
-    }
-
-    class SWI : CoProcessorInstruction
-    {
-
-    }
 
 
 }

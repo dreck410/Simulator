@@ -43,7 +43,7 @@ namespace Simulator1
                         Console.WriteLine("Test Failed please see log.txt for details");
                         Logger.Instance.writeLog("\n\n\nTest: Failed\n\n\n");
                     }
-                    
+
                 }
 
                 Logger.Instance.openTrace();
@@ -59,34 +59,22 @@ namespace Simulator1
                         //loaded and wants to be executed.
                         Computer.Instance.run();
                         while (Computer.Instance.getThreadStatus()) { ;}
-                       // System.Environment.Exit(0);
+                        // System.Environment.Exit(0);
 
                     }
                 }
-
                 // listens for gdb connection
                 if (Option.Instance.getDebug())
-                {   
+                {
 
                     Handler h = new Handler();
-                    
+
                     h.Listen(8080);
-	            }
-                //if debug flag is not set. run
-
-                
-            //    danielTesting(args);
-
-
-            
-            }
-            
-           
+                }
+                //if debug flag is not set. run            
+            }  
         }
-
     }//programClass
-
-
 }//namespace
 
 
