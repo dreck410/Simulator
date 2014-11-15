@@ -73,7 +73,7 @@ namespace Simulator1
             }
             else
             {
-                Logger.Instance.writeLog("CMD: Condition Code Stopped Execution");
+                Logger.Instance.writeLog(string.Format("CMD: Condition Code Stopped Execution = {0}", command.condStr));
             }
 
             return null;

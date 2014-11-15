@@ -84,29 +84,6 @@ namespace Simulator1
            
         }
 
-
-        static void danielTesting(string[] args)
-        {
-
- 
-            //THis will be replaces later
-            //with information of just running
-                    Console.WriteLine("\n");
-                    Console.Write("Please input a command: ");
-                    string input = Console.ReadLine();
-                    Logger.Instance.openTrace();
-                    while (input != "q" && input != "")
-                    {
-                        Computer.Instance.command(input);
-                        Console.Write("\nPlease input a command: ");
-                        //Run, Step, Stop/Break, and Reset
-                        input = Console.ReadLine();
-                    }
-
-         }//DanielTest
-
-
-
     }//programClass
 
 

@@ -69,66 +69,68 @@ namespace Simulator1
             bool Z = flagsNZCF[1];
             bool C = flagsNZCF[2];
             bool F = flagsNZCF[3];
+            condStr = "HUH";
             switch (cond)
             {
                 case 0x0:
+                    condStr = "EQ";
                     if (Z) { 
-                        condStr = "EQ";
                         return true; }
                     break;
                 case 0x1:
+                    condStr = "NE";
                     if (!Z)
                     {
-                        condStr = "NE";
                         return true; }
                     break;
-                case 0x2:
-                    if (C) { condStr = "CS";
+                case 0x2: 
+                    condStr = "CS";
+                    if (C) { 
                         return true;}
                     break;
                 case 0x3:
-                    if (!C) { condStr = "CC";
-                        return true; }
+                    condStr = "CC";
+                       if (!C) {  return true; }
                     break;
                 case 0x4:
-                    if (N) { condStr = "MI";
-                        return true; }
+                   condStr = "MI";
+                        if (N) {  return true; }
                     break;
                 case 0x5:
-                    if (!N) { condStr = "PL";
-                        return true; }
+                    condStr = "PL";
+                       if (!N) {  return true; }
                     break;
                 case 0x6:
-                    if (F) { condStr = "VS";
-                        return true; }
+                    condStr = "VS";
+                       if (F) {  return true; }
                     break;
                 case 0x7:
-                    if (!F) { condStr = "VC";
-                        return true; }
+                    condStr = "VC";
+                        if (!F) { return true; }
                     break;
                 case 0x8:
-                    if ((C && !Z)) { condStr = "HI";
-                        return true; }
+                   condStr = "HI";
+                         if ((C && !Z)) { return true; }
                     break;
                 case 0x9:
-                    if ((!C || Z)) { condStr = "LS";
-                        return true; }
+                     condStr = "LS";
+                       if ((!C || Z)) { return true; }
                     break;
                 case 0xa:
-                    if ((N == F)) { condStr = "GE";
-                        return true; }
+                     condStr = "GE";
+                        if ((N == F)) {return true; }
                     break;
                 case 0xb:
-                    if ((N != F)) { condStr = "LT";
-                        return true; }
+                    condStr = "LT";
+                        if ((N != F)) { return true; }
                     break;
                 case 0xc:
-                    if ((!Z && N == F)) { condStr = "GT";
-                        return true;}
+                    condStr = "GT";
+                        if ((!Z && N == F)) { return true;}
                     break;
                 case 0xd:
-                    if ((Z || N != F)) { condStr = "LE";
-                        return true; }
+                     condStr = "LE";
+                        if ((Z || N != F)) {return true; }
                     break;
                 case 0xe:
                     condStr = "";
@@ -502,15 +504,19 @@ namespace Simulator1
             uint cmpVal = RnVal - this.shiftOp.offset;
 
             Memory alu = new Memory(4);
-            alu.WriteWord(0, cmpVal);
+            alu.WriteWord(0, (uint)cmpVal);
             //set N flag
            // uint biggest32BitUint = 2147483647;
             N = alu.TestFlag(0,31);
             Z = alu.ReadWord(0, true) == 0;
             //result = w1 + w2;
-            C = cmpVal < RnVal;
 
-            //C = (0 <= cmpVal);
+         // if ((MSB(RnVal)) && (MSB(this.shiftOp.offset))) C = true;
+         // if ((MSB(RnVal)) && (!MSB(cmpVal))) C = true;
+         // if ((MSB(this.shiftOp.offset)) && (!MSB(cmpVal))) C = true;
+            
+            C = (this.shiftOp.offset <= RnVal);
+            
 
             uint negative = 0x80000000;
             //figure out my OverFlow
@@ -549,6 +555,15 @@ namespace Simulator1
 
             Logger.Instance.writeLog(String.Format("FLG: N: {0} | Z: {1} | C: {2} | F: {3}",N,Z,C,F));
 
+        }
+
+        private bool MSB(uint Num)
+        {
+            if ((Num & 0x8000000) == 1)
+            {
+                return true;
+            }
+            return false;
         }
 
 
