@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simulator1", "Simulator1.cs
 EndProject
 Project("{F088123C-0E9E-452A-89E6-6BA2F21D5CAC}") = "firstTry", "..\firstTry\firstTry.modelproj", "{63F5FB53-55AC-458F-A015-A4A600D1CE7F}"
 EndProject
+Project("{F088123C-0E9E-452A-89E6-6BA2F21D5CAC}") = "sim2", "..\sim2\sim2.modelproj", "{210F1ECE-529A-4938-BF54-AFB3324CB355}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,16 @@ Global
 		{63F5FB53-55AC-458F-A015-A4A600D1CE7F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{63F5FB53-55AC-458F-A015-A4A600D1CE7F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{63F5FB53-55AC-458F-A015-A4A600D1CE7F}.Release|x86.ActiveCfg = Release|Any CPU
+		{210F1ECE-529A-4938-BF54-AFB3324CB355}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{210F1ECE-529A-4938-BF54-AFB3324CB355}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{210F1ECE-529A-4938-BF54-AFB3324CB355}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{210F1ECE-529A-4938-BF54-AFB3324CB355}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{210F1ECE-529A-4938-BF54-AFB3324CB355}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{210F1ECE-529A-4938-BF54-AFB3324CB355}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{210F1ECE-529A-4938-BF54-AFB3324CB355}.Release|Any CPU.Build.0 = Release|Any CPU
+		{210F1ECE-529A-4938-BF54-AFB3324CB355}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{210F1ECE-529A-4938-BF54-AFB3324CB355}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{210F1ECE-529A-4938-BF54-AFB3324CB355}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
